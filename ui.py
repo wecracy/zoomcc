@@ -44,6 +44,7 @@ class WindowClass(QDialog, form_class) :
         lylics = f.readlines()
         f.close()
         self.lylic.clear()
+        self.lylic.addItem("가사시작")
         for lylic in lylics:
             self.lylic.addItem(lylic)
         if self.lylic.count() > 0:
@@ -65,7 +66,7 @@ class WindowClass(QDialog, form_class) :
         self.lylic.setCurrentRow(self.lylic.currentRow() + 1)
 
     def sendLylic(self):
-        if self.lylicNotShow.isChecked():
+        if self.lylicNotShow.isChecked() or self.lylic.currentRow() == 0:
             return
         result = self.zoom.sendCC(self.lylic.currentItem().text(), 'ko-KR')
         if result == False:

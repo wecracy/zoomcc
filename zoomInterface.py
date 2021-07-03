@@ -20,14 +20,14 @@ class ZoomInterface():
       return cls.__instance
 
     def _setSeqCount(self, url, count):
-        seq_count_file = open(self.seq_count_file_name, "w+")
+        seq_count_file = open(self.seq_count_file_name, "w+", encoding='UTF8')
         self.seq_count_table[url] = count
         json.dump(self.seq_count_table, seq_count_file)
         seq_count_file.close()
 
     def _loadSeqCount(self):
         try:
-            seq_count_file = open(self.seq_count_file_name, "r")
+            seq_count_file = open(self.seq_count_file_name, "r", encoding='UTF8')
             seq_count_table = json.load(seq_count_file)
             seq_count_file.close()
             return seq_count_table
@@ -55,7 +55,7 @@ class ZoomInterface():
                     self._setSeqCount(self.url, self.seq_count_table[self.url]+1)
                     return (True, "")
                 else:
-                    return (False, "가사를 보내는 것을 실패하였습니다("+str(resp.status_code) +")")
+                    return (False, "자막을 보내는 것을 실패하였습니다("+str(resp.status_code) +")")
             else:
                 return (False, "Zoom URL을 바르게 설정하세요.")
         except:

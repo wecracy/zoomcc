@@ -45,7 +45,7 @@ class WindowClass(QDialog, form_class) :
         if os.path.isfile(fileName) == False:
             QMessageBox.information(self, "QMessageBox", fileName + ": 파일이 존재하지 않습니다.")
             return
-        f = open(fileName, 'r')
+        f = open(fileName, 'r', encoding='UTF8')
         lylics = f.readlines()
         f.close()
         self.lylic.clear()

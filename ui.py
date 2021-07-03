@@ -19,13 +19,18 @@ class WindowClass(QDialog, form_class) :
         self.zoom = ZoomInterface.instance()
         self.lylicNotShow.setChecked(True)
 
-        self.urlSet.clicked.connect(lambda: self.zoom.setURL(self.url.text()))
-        self.url.returnPressed.connect(lambda: self.zoom.setURL(self.url.text()))
+        self.urlSet.clicked.connect(self.setURL)
+        self.url.returnPressed.connect(self.setURL)
         self.open.clicked.connect(self.loadLylics)
         self.fileName.returnPressed.connect(self.loadLylics)
         self.lylic.currentItemChanged.connect(self.sendLylic)
         self.past.clicked.connect(self.setPast)
         self.next.clicked.connect(self.setNext)
+
+    def setURL(self):
+        result, message = self.zoom.setURL(self.url.text())
+        if result == False:
+            QMessageBox.information(self, "QMessageBox", message)
 
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_Right or e.key() == Qt.Key_Down:
@@ -68,9 +73,9 @@ class WindowClass(QDialog, form_class) :
     def sendLylic(self):
         if self.lylicNotShow.isChecked() or self.lylic.currentRow() == 0:
             return
-        result = self.zoom.sendCC(self.lylic.currentItem().text(), 'ko-KR')
+        result, message  = self.zoom.sendCC(self.lylic.currentItem().text(), 'ko-KR')
         if result == False:
-            QMessageBox.information(self, "QMessageBox", "Zoom URL을 설정하세요.")
+            QMessageBox.information(self, "QMessageBox", message)
 
 if __name__ == "__main__" :
     app = QApplication(sys.argv)
